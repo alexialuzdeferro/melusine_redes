@@ -20,6 +20,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
 
     /* === Temas === */
@@ -38,6 +39,31 @@
     body.trans {
       background: linear-gradient(135deg, #ff85d9 0%, #ffffff 35%, #ffffff 65%, #53c2ff 100%);
       color: #000000;
+    }
+
+    /* Contador de acessos - discreto e transparente */
+    #visitor-count {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      backdrop-filter: blur(4px);
+      z-index: 90;
+      pointer-events: none;
+    }
+
+    body.light #visitor-count {
+      background: rgba(0, 0, 0, 0.08);
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    body.trans #visitor-count {
+      background: rgba(255, 255, 255, 0.3);
+      color: rgba(0, 0, 0, 0.8);
     }
 
     /* Botões de tema */
@@ -231,6 +257,12 @@
     body.trans footer { color: #333; }
 
     @media (max-width: 500px) {
+      #visitor-count {
+        top: 12px;
+        left: 12px;
+        font-size: 11px;
+        padding: 3px 8px;
+      }
       .avatar { width: 120px; height: 120px; }
       h1 { font-size: 24px; }
       .social-name { font-size: 10px; }
@@ -239,6 +271,9 @@
   </style>
 </head>
 <body class="mystic">
+  <!-- Contador de acessos (discreto) -->
+  <div id="visitor-count">Carregando...</div>
+
   <!-- 4 botões de tema -->
   <div class="theme-switchers">
     <div class="mode-button light-mode" title="Modo Claro" onclick="setTheme('light')">
@@ -356,14 +391,61 @@
     </footer>
   </div>
 
-  <!-- JavaScript para trocar e salvar tema -->
+  <!-- Supabase + Contador -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    // Configuração pública (segura)
+    const supabase = createClient(
+      'https://rbygxkbewzknvjjhxdvw.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJieWd4a2Jld3prbnZqamh4ZHZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwMDcxNjQsImV4cCI6MjA4MTU4MzE2NH0.YrHF9HEGo6yv9MyNsPzFgBhaAB1DRh2SLU8f7L6s1nY'
+    );
+
+    const countElement = document.getElementById('visitor-count');
+
+    async function incrementAndShowCount() {
+      try {
+        // Busca o valor atual
+        const { data, error: fetchError } = await supabase
+          .from('page_views')
+          .select('view_count')
+          .eq('page', 'home')
+          .single();
+
+        if (fetchError) throw fetchError;
+
+        const newCount = (data?.view_count || 0) + 1;
+
+        // Atualiza
+        const { error: updateError } = await supabase
+          .from('page_views')
+          .update({
+            view_count: newCount,
+            updated_at: new Date().toISOString()
+          })
+          .eq('page', 'home');
+
+        if (updateError) throw updateError;
+
+        // Exibe com formatação brasileira
+        countElement.textContent = `${newCount.toLocaleString('pt-BR')} almas`;
+      } catch (err) {
+        countElement.textContent = '✨';
+        console.warn('Não foi possível carregar o contador:', err.message);
+      }
+    }
+
+    // Executa ao carregar
+    incrementAndShowCount();
+  </script>
+
+  <!-- Troca de tema -->
   <script>
     function setTheme(theme) {
       document.body.className = theme;
       localStorage.setItem('theme', theme);
     }
 
-    // Ao carregar, usa o tema salvo ou "mystic" por padrão
     window.onload = () => {
       const saved = localStorage.getItem('theme');
       if (saved) {
