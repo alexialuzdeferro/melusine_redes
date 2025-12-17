@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alexia Melusine | Almas de Pombagira</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* === Temas === */
+    body.mystic {
+      background: linear-gradient(135deg, #1a002e, #3a005f);
+      color: white;
+    }
+    body.light {
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+    body.dark {
+      background: #000000;
+      color: #ffffff;
+    }
+    body.trans {
+      background: linear-gradient(135deg, #ff85d9 0%, #ffffff 35%, #ffffff 65%, #53c2ff 100%);
+      color: #000000;
+    }
+
+    /* Botões de tema */
+    .theme-switchers {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 20px 0;
+      z-index: 100;
+    }
+
+    .mode-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      font-size: 16px;
+    }
+
+    .mode-button:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+
+    .mystic-mode {
+      background: linear-gradient(135deg, #1a002e, #3a005f);
+      color: #e0c0ff;
+      border: 1px solid rgba(199, 119, 255, 0.5);
+    }
+    .light-mode {
+      background: linear-gradient(135deg, #fff, #f0f0f0);
+      color: #333;
+    }
+    .dark-mode {
+      background: linear-gradient(135deg, #000, #111);
+      color: #ddd;
+    }
+    .trans-mode {
+      background: linear-gradient(90deg, #ff85d9, #ffffff, #53c2ff);
+      color: #000;
+    }
+
+    /* Conteúdo principal */
+    .container {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 10px 0 20px;
+      box-shadow: 0 0 16px rgba(0,0,0,0.2);
+    }
+
+    body.mystic .avatar { border: 4px solid #c777ff; }
+    body.light .avatar { border: 4px solid #888; }
+    body.dark .avatar { border: 4px solid #888; }
+    body.trans .avatar { border: 4px solid #555; }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .motto {
+      font-style: italic;
+      margin-bottom: 30px;
+      padding: 0 10px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Redes sociais */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+      gap: 14px;
+      margin: 0 auto 30px;
+      padding: 0 10px;
+      width: 100%;
+    }
+
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    body.mystic .social-link {
+      background: rgba(40, 5, 70, 0.5);
+      color: white;
+      border: 1px solid rgba(199, 119, 255, 0.2);
+    }
+    body.light .social-link,
+    body.trans .social-link {
+      background: rgba(255, 255, 255, 0.7);
+      color: #111;
+    }
+    body.dark .social-link {
+      background: rgba(20, 20, 20, 0.8);
+      color: white;
+    }
+
+    .social-link:hover {
+      transform: translateY(-3px);
+    }
+
+    .social-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    body.mystic .social-icon { color: #d28cff; }
+    body.dark .social-icon { color: #aaa; }
+    body.light .social-icon { color: #555; }
+    body.trans .social-icon { color: #ff69b4; }
+
+    .social-name {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Realce especial para o botão de música */
+    .music-special {
+      position: relative;
+      border: 2px solid #ff6b6b !important;
+      box-shadow: 0 0 12px rgba(255, 107, 107, 0.4) !important;
+    }
+
+    body.light .music-special {
+      background: rgba(255, 240, 240, 0.8) !important;
+      border-color: #ff6b6b !important;
+    }
+    body.trans .music-special {
+      background: rgba(255, 255, 255, 0.7) !important;
+      border-color: #ff69b4 !important;
+    }
+    body.dark .music-special {
+      background: rgba(20, 0, 30, 0.7) !important;
+      border-color: #ff4d94 !important;
+    }
+    body.mystic .music-special {
+      background: rgba(40, 5, 70, 0.6) !important;
+      border-color: #ff4d94 !important;
+    }
+
+    .music-special .social-icon {
+      color: #ff6b6b !important;
+      animation: pulse 2s infinite;
+    }
+
+    body.trans .music-special .social-icon {
+      color: #ff1493 !important;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    /* Rodapé */
+    footer {
+      margin-top: auto;
+      padding: 15px;
+      font-size: 14px;
+      text-align: center;
+      width: 100%;
+    }
+
+    body.mystic footer { color: #b8a1d6; }
+    body.light footer { color: #333; }
+    body.dark footer { color: #aaa; }
+    body.trans footer { color: #333; }
+
+    @media (max-width: 500px) {
+      .avatar { width: 120px; height: 120px; }
+      h1 { font-size: 24px; }
+      .social-name { font-size: 10px; }
+      .mode-button { width: 38px; height: 38px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body class="mystic">
+  <!-- 4 botões de tema -->
+  <div class="theme-switchers">
+    <div class="mode-button light-mode" title="Modo Claro" onclick="setTheme('light')">
+      ☀️
+    </div>
+    <div class="mode-button dark-mode" title="Modo Escuro" onclick="setTheme('dark')">
+      🌙
+    </div>
+    <div class="mode-button trans-mode" title="Modo Trans" onclick="setTheme('trans')">
+      🌈
+    </div>
+    <div class="mode-button mystic-mode" title="Modo Original" onclick="setTheme('mystic')">
+      🔮
+    </div>
+  </div>
+
+  <div class="container">
+    <img
+      src="https://raw.githubusercontent.com/alexialuzdeferro/Business-Card/refs/heads/main/Imagine_1410952850621807.jpg"
+      alt="Alexia Melusine"
+      class="avatar"
+    />
+    <h1>Alexia Melusine</h1>
+    <p class="motto">
+      "Dançando entre as constelações e os véus do mistério. Sou a balança que oscila entre o visível e o oculto, fluindo como as marés da lua."
+    </p>
+
+    <!-- REDES SOCIAIS + MÚSICA -->
+    <div class="social-grid">
+      <a href="https://www.tiktok.com/@alexia.melusine" target="_blank" class="social-link">
+        <i class="fab fa-tiktok social-icon"></i>
+        <span class="social-name">Alexia.Melusine</span>
+      </a>
+      <a href="https://www.tiktok.com/@espelhosdepombagira" target="_blank" class="social-link">
+        <i class="fab fa-tiktok social-icon"></i>
+        <span class="social-name">Espelhos de Pombagira</span>
+      </a>
+      <a href="https://www.tiktok.com/@almasdepombagira" target="_blank" class="social-link">
+        <i class="fab fa-tiktok social-icon"></i>
+        <span class="social-name">Almas de Pombagira</span>
+      </a>
+      <a href="https://www.tiktok.com/@alexiarosadefogo" target="_blank" class="social-link">
+        <i class="fab fa-tiktok social-icon"></i>
+        <span class="social-name">Alexia Rosa de Fogo</span>
+      </a>
+      <a href="https://www.youtube.com/@almasdepombagira" target="_blank" class="social-link">
+        <i class="fab fa-youtube social-icon"></i>
+        <span class="social-name">YouTube</span>
+      </a>
+      <a href="https://www.instagram.com/almasdepombagira/" target="_blank" class="social-link">
+        <i class="fab fa-instagram social-icon"></i>
+        <span class="social-name">Almas de Pombagira</span>
+      </a>
+      <a href="https://www.instagram.com/alexiamelusine/" target="_blank" class="social-link">
+        <i class="fab fa-instagram social-icon"></i>
+        <span class="social-name">Alexia Melusine</span>
+      </a>
+      <a href="https://www.threads.com/@almasdepombagira" target="_blank" class="social-link">
+        <i class="fa-brands fa-threads social-icon"></i>
+        <span class="social-name">Threads</span>
+      </a>
+      <a href="https://www.facebook.com/alexia.tsan.7" target="_blank" class="social-link">
+        <i class="fab fa-facebook social-icon"></i>
+        <span class="social-name">Facebook</span>
+      </a>
+      <a href="https://bsky.app/profile/almasdepombagira.bsky.social" target="_blank" class="social-link">
+        <i class="fa-solid fa-feather social-icon"></i>
+        <span class="social-name">Bluesky</span>
+      </a>
+      <a href="https://www.meta.ai/@alexiamelusine" target="_blank" class="social-link">
+        <i class="fa-solid fa-robot social-icon"></i>
+        <span class="social-name">Meta AI</span>
+      </a>
+      <a href="https://sora.chatgpt.com/profile/alexialuzdeferro" target="_blank" class="social-link">
+        <i class="fa-solid fa-video social-icon"></i>
+        <span class="social-name">Sora</span>
+      </a>
+      <a href="https://t.me/pomba_giras" target="_blank" class="social-link">
+        <i class="fab fa-telegram social-icon"></i>
+        <span class="social-name">Telegram</span>
+      </a>
+      <a href="https://whatsapp.com/channel/0029VbBs2AnJkK7J9J0nLr2G" target="_blank" class="social-link">
+        <i class="fab fa-whatsapp social-icon"></i>
+        <span class="social-name">WhatsApp</span>
+      </a>
+      <a href="https://discord.gg/gWZP8R7Dqu" target="_blank" class="social-link">
+        <i class="fab fa-discord social-icon"></i>
+        <span class="social-name">Discord</span>
+      </a>
+      <a href="https://br.pinterest.com/almasdepombagira/" target="_blank" class="social-link">
+        <i class="fab fa-pinterest social-icon"></i>
+        <span class="social-name">Pinterest</span>
+      </a>
+      <a href="https://www.kwai.com/@AlmasdePombagira" target="_blank" class="social-link">
+        <i class="fa-solid fa-film social-icon"></i>
+        <span class="social-name">Kwai (Almas)</span>
+      </a>
+      <a href="https://www.kwai.com/@AlexiaRosadeFogo" target="_blank" class="social-link">
+        <i class="fa-solid fa-film social-icon"></i>
+        <span class="social-name">Kwai (Rosa)</span>
+      </a>
+      <a href="https://www.kwai.com/@espelhosdepombagira" target="_blank" class="social-link">
+        <i class="fa-solid fa-film social-icon"></i>
+        <span class="social-name">Kwai (Espelhos)</span>
+      </a>
+      <!-- Botão de Música - Último item -->
+      <a href="https://alexialuzdeferro.github.io/vampire-waves/" target="_blank" class="social-link music-special">
+        <i class="fas fa-music social-icon"></i>
+        <span class="social-name">Vampire Waves</span>
+      </a>
+    </div>
+
+    <footer>
+      Todos os direitos reservados. By Alexia Melusine
+    </footer>
+  </div>
+
+  <!-- JavaScript para trocar e salvar tema -->
+  <script>
+    function setTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem('theme', theme);
+    }
+
+    // Ao carregar, usa o tema salvo ou "mystic" por padrão
+    window.onload = () => {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.body.className = saved;
+      } else {
+        document.body.className = 'mystic';
+      }
+    };
+  </script>
+</body>
+</html>
