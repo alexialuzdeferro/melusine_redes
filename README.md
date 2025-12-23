@@ -1,7 +1,7 @@
 # 🔮 ALMAS DE POMBAGIRA  
 ### _"Dançando entre as constelações e os véus do mistério. Sou a balança que oscila entre o visível e o oculto, fluindo como as marés da lua."_
 
-![Portal das Almas](https://raw.githubusercontent.com/alexialuzdeferro/Business-Card/refs/heads/main/Imagine_1410952850621807.jpg)
+![Portal das Almas](https://raw.githubusercontent.com/alexialuzdeferro/pombagira-revelada/refs/heads/main/Al%C3%AA%20(8).png)
 
 Este não é apenas um site.  
 É um **portal sagrado**.  
